@@ -145,6 +145,14 @@ module Geokit
         nil
       end
 
+      # Call the geocoder service using the timeout if configured.
+      def self.call_geocoder_service_with_token(url, token)
+        Timeout.timeout(Geokit::Geocoders.request_timeout) { return do_get(url, token) } if Geokit::Geocoders.request_timeout
+        do_get(url, token)
+      rescue Timeout::Error
+        nil
+      end
+
       # Not all geocoders can do reverse geocoding. So, unless the subclass explicitly overrides this method,
       # a call to reverse_geocode will return an empty GeoLoc. If you happen to be using MultiGeocoder,
       # this will cause it to failover to the next geocoder, which will hopefully be one which supports reverse geocoding.
@@ -191,6 +199,12 @@ module Geokit
 
       def self.process(format, url, *args)
         res = call_geocoder_service(url)
+        return GeoLoc.new unless net_adapter.success?(res)
+        parse format, res.body, *args
+      end
+
+      def self.process_with_authorization(format, url, token, *args)
+        res = call_geocoder_service_with_token(url, token)
         return GeoLoc.new unless net_adapter.success?(res)
         parse format, res.body, *args
       end

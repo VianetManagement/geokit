@@ -1,11 +1,12 @@
 module Geokit
   module NetAdapter
     class NetHttp
-      def self.do_get(url)
+      def self.do_get(url, token = nil)
         uri = URI(url)
         Geokit::Geocoders.useragent ? headers = {'User-Agent' => Geokit::Geocoders.useragent} : headers = {} 
         req = Net::HTTP::Get.new(uri.request_uri, headers)
         req.basic_auth(uri.user, uri.password) if uri.userinfo
+        req["Authorization"] = "Bearer #{token}" unless token.empty?
         net_http_args = [uri.host, uri.port]
         if (proxy_uri_string = Geokit::Geocoders.proxy)
           proxy_uri = URI.parse(proxy_uri_string)
