@@ -7,16 +7,13 @@ module Geokit
 
 		  private
 
-		  def submit_url(address)
+		  def self.do_geocode(address, options = {})
 		  	address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         query_string = "?q=#{Geokit::Inflector.url_escape(address_str)}"
         base = "https://geocode-api.vianet.us/places"
         parsed_url = URI.parse("#{base}#{query_string}")
-		  end
 
-		  def self.do_geocode(address, options = {})
-		  	
-		  	process_with_authorization :json, submit_url(address), key
+		  	process_with_authorization :json, parsed_url, key
 		  end
 
 		  def self.parse_json(json)
