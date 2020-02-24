@@ -17,7 +17,6 @@ module Geokit
 		  end
 
 		  def self.parse_json(result)
-		  	puts result.inspect
 		    loc = new_loc
 
 		    loc.success = true
@@ -27,7 +26,7 @@ module Geokit
 	      loc.lat = result.first.dig("_source", "location", "lat")
 	      loc.lng = result.first.dig("_source", "location", "lon")
 	      loc.country_code = result.first.dig("_source", "country_code") || "US"
-	      return GeoLoc.new if loc.lng.empty? || loc.lat.empty?
+	      return GeoLoc.new if loc.lng.nil? || loc.lat.nil?
 	      loc
 		  end
 		end
