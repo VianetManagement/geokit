@@ -147,8 +147,8 @@ module Geokit
 
       # Call the geocoder service using the timeout if configured.
       def self.call_geocoder_service_with_token(url, token)
-        Timeout.timeout(Geokit::Geocoders.request_timeout) { return do_get(url, token) } if Geokit::Geocoders.request_timeout
-        do_get(url, token)
+        Timeout.timeout(Geokit::Geocoders.request_timeout) { return do_get_with_token(url, token) } if Geokit::Geocoders.request_timeout
+        do_get_with_token(url, token)
       rescue Timeout::Error
         nil
       end
@@ -171,6 +171,11 @@ module Geokit
       # Wraps the geocoder call around a proxy if necessary.
       def self.do_get(url)
         net_adapter.do_get(url)
+      end
+
+      # Wraps the geocoder call around a proxy if necessary.
+      def self.do_get_with_token(url, token)
+        net_adapter.do_get(url, token)
       end
 
       def self.net_adapter
