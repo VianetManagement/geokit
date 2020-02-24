@@ -17,6 +17,7 @@ module Geokit
 		  end
 
 		  def self.parse_json(result)
+		  	puts result.inspect
 		    loc = new_loc
 
 		    loc.success = true
