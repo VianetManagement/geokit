@@ -1,3 +1,3 @@
 module Geokit
-  VERSION = '1.13.2'
+  VERSION = '1.13.2.1'
 end
