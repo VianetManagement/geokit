@@ -18,6 +18,7 @@ module Geokit
 
 		  def self.parse_json(result)
 		    loc = new_loc
+		    return loc if result.nil? || result.empty?
 
 		    loc.success = true
 	      loc.city = result.first.dig("_source", "name")
