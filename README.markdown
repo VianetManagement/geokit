@@ -2,7 +2,7 @@ Geokit
 ======
 
 [![Gem Version](https://badge.fury.io/rb/geokit.svg)](http://badge.fury.io/rb/geokit)
-[![Build Status](https://travis-ci.org/geokit/geokit.svg?branch=master)](https://travis-ci.org/geokit/geokit)
+[![Build Status](https://github.com/geokit/geokit/workflows/CI/badge.svg)](https://github.com/geokit/geokit/actions)
 [![Coverage Status](https://coveralls.io/repos/geokit/geokit/badge.svg)](https://coveralls.io/r/geokit/geokit)
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 [![Code Climate](https://codeclimate.com/github/geokit/geokit.svg)](https://codeclimate.com/github/geokit/geokit)
@@ -285,7 +285,7 @@ Multi Geocoder - provides failover for the physical location geocoders, and also
 ```
 
 ## MULTIPLE RESULTS
-Some geocoding services will return multple results if the there isn't one clear result.
+Some geocoding services will return multiple results if the there isn't one clear result.
 Geoloc can capture multiple results through its "all" method.
 
 ```ruby
@@ -313,14 +313,14 @@ between two points.
 LatLng is a simple container for latitude and longitude, but
 it's made more powerful by mixing in the above-mentioned Mappable
 module -- therefore, you can calculate easily the distance between two
-LatLng ojbects with `distance = first.distance_to(other)`
+LatLng objects with `distance = first.distance_to(other)`
 
 GeoLoc represents an address or location which
 has been geocoded. You can get the city, zipcode, street address, etc.
 from a GeoLoc object. GeoLoc extends LatLng, so you also get lat/lng
 AND the Mappable module goodness for free.
 
-geocoders.rb contains all the geocoder implemenations. All the gercoders
+geocoders.rb contains all the geocoder implementations. All the geocoders
 inherit from a common base (class Geocoder) and implement the private method
 do_geocode.
 
