@@ -11,7 +11,8 @@ module Geokit
 		  	address = address.nil? ? "" : address
 		  	address_str = address.is_a?(GeoLoc) ? address.to_geocodeable_s : address
         query_string = "?q=#{Geokit::Inflector.url_escape(address_str)}"
-        base = "https://geocode.vianet.us/places"
+        # base = "https://geocode.vianet.us/places"
+        base = "https://geocode.vianet.us/legacy/places"
         parsed_url = URI.parse("#{base}#{query_string}")
 
 		  	process_with_authorization :json, parsed_url, key
@@ -22,15 +23,30 @@ module Geokit
 		    return loc if result.nil? || result.empty?
 
 		    loc.success = true
-	      loc.city = result.first.dig("city")
-	      loc.state = result.first.dig("state_code")
-	      loc.state_name = result.first.dig("state_name")
-	      loc.lat = result.first.dig("lat")
-	      loc.lng = result.first.dig("lon")
-	      loc.country_code = "US"
+	      loc.city = result.first.dig("_source", "name")
+	      loc.state = result.first.dig("_source", "admin1_code")
+	      loc.state_name = result.first.dig("_source", "admin1_name")
+	      loc.lat = result.first.dig("_source", "location", "lat")
+	      loc.lng = result.first.dig("_source", "location", "lon")
+	      loc.country_code = result.first.dig("_source", "country_code") || "US"
 	      return GeoLoc.new if loc.lng.nil? || loc.lat.nil?
 	      loc
 		  end
+
+		  # def self.parse_json(result)
+		  #   loc = new_loc
+		  #   return loc if result.nil? || result.empty?
+
+		  #   loc.success = true
+	    #   loc.city = result.first.dig("city")
+	    #   loc.state = result.first.dig("state_code")
+	    #   loc.state_name = result.first.dig("state_name")
+	    #   loc.lat = result.first.dig("lat")
+	    #   loc.lng = result.first.dig("lon")
+	    #   loc.country_code = "US"
+	    #   return GeoLoc.new if loc.lng.nil? || loc.lat.nil?
+	    #   loc
+		  # end
 		end
   end
 end
